@@ -1,14 +1,13 @@
 package com.infomaximum.certgen;
 
-import com.infomaximum.certgen.config.CAConfig;
+import com.infomaximum.certgen.config.Config;
 import com.infomaximum.certgen.context.CertContext;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.infomaximum.certgen.parser.ConfigParser;
 
 public class CertgenApp {
 
     private static CertContext certContext = null;
+    private Config config;
 
     public CertgenApp(CertContext certContext) {
         CertgenApp.certContext = certContext;
@@ -19,11 +18,7 @@ public class CertgenApp {
     }
 
     public void run() {
-        Path certgenPath = Paths.get(certContext.getCertgenConf());
-        CAConfig caConfig = new CAConfig.Builder()
-                .fromConfigFile(certgenPath, "ca_root")
-                .build();
-
+        this.config = ConfigParser.parseConfig(certContext.getCertgenConf());
         buildToolsEnvironment();
     }
 

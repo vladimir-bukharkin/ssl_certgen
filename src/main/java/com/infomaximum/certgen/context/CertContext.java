@@ -23,6 +23,9 @@ public class CertContext {
     }
 
     public static CertContext build(String[] args) {
+        if (args.length == 0) {
+            throw new RuntimeException("No arguments set");
+        }
         CertContext certContext = new CertContext();
         for (String arg : args) {
             if (arg.startsWith(CERTGEN_CONF)) {
