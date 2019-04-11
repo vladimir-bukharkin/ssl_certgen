@@ -1,0 +1,55 @@
+group 'com.infomaximum'
+version '0.0.1'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        java.srcDir 'src/main/java'
+        resources.srcDir 'src/main/resources'
+        compileClasspath += configurations.provided
+    }
+    test {
+        java.srcDir 'src/test/java'
+        compileClasspath += configurations.provided + main.output
+        runtimeClasspath += configurations.provided + main.output
+    }
+    test_integration {
+        java.srcDir 'src/test_integration/java'
+        resources.srcDir 'src/test_integration/resources'
+        compileClasspath += configurations.provided + main.output + test.output
+        runtimeClasspath += configurations.provided + main.output + test.output
+    }
+    manual {
+        java.srcDir 'src/manual/java'
+        resources.srcDir 'src/manual/resources'
+        compileClasspath += configurations.provided + main.output + test.output
+        runtimeClasspath += configurations.provided + main.output + test.output
+    }
+}
+
+jar {
+    archiveName = rootProject.name + '.jar'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
