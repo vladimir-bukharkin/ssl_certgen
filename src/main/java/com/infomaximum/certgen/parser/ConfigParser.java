@@ -12,8 +12,7 @@ public class ConfigParser {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Config config = (Config) jaxbUnmarshaller.unmarshal(Paths.get(path).toFile());
-            return config;
+            return (Config) jaxbUnmarshaller.unmarshal(Paths.get(path).toFile());
 
         } catch (JAXBException e) {
             throw new RuntimeException("Can't parse certgen conf: " + path ,e);
